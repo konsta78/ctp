@@ -1,0 +1,47 @@
+﻿{% load static %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="{% static 'catalog/style.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'catalog/media-queries.css'  %}">
+		<title>Телефонный справочник</title>
+	</head>
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<div class="headerContent">
+					<ul class="nav" style="float: left">
+						<li><a href="#">Телефонный справочник</a></li>
+					</ul>
+					<ul class="nav">
+						<li><a href="#">Поиск</a></li>
+						<li><a href="#">Войти</a></li>
+						<li><a href="#">Контакты</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="content">
+				<div class="leftCol">
+					<ul class="leftNav">
+						<li><a href="#">Руководство</a></li>
+						<li><a href="#">Отделы</a></li>
+						<li><a href="#">Специалисты</a></li>
+
+					</ul>
+
+				</div>
+				<div>
+                    {% block content %}
+
+                    {% endblock %}
+
+				</div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>

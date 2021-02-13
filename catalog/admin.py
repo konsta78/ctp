@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Department, Employee, AdressDepartment, User
+from catalog.models import Department, Employee, AdressDepartment
+from login.models import User
 
 # Register your models here.
 

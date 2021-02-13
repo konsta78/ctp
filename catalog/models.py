@@ -3,25 +3,6 @@ from django.db import models
 # Create your models here.
 
 
-class User(models.Model):
-    USER_CLASS = (
-        ('Сторонний', 'Сторонний'),
-        ('Сотрудник', 'Сотрудник'),
-        ('Администратор', 'Администратор'),
-    )
-
-    name = models.ForeignKey('Employee', on_delete=models.CASCADE, null=True, blank=True)
-    login = models.CharField(max_length=40, verbose_name="Логин")
-    password = models.CharField(max_length=20, verbose_name="Пароль")
-    user_class = models.CharField(max_length=15, choices=USER_CLASS, verbose_name="Категория пользователя")
-
-    def __str__(self):
-        if self.name:
-            return self.name.surname+" ("+self.login+")"
-        else:
-            return self.login
-
-
 class Department(models.Model):
     name = models.TextField(max_length=150, verbose_name="Наименование отдела/подзразделения")
     short_name = models.CharField(max_length=50, verbose_name="Сокращенное название", null=True, blank=True)

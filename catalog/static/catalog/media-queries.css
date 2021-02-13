@@ -1,0 +1,72 @@
+/*Размер экрана меньше 980px*/
+@media screen and (max-width: 980px) {
+	.wrapper {
+		width: 100%;
+		padding: 0;
+	}
+	
+	ul.nav li a {
+		padding: 0 20px;
+	}
+	
+	.headerContent,.content {
+		border-radius: 0;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+	}
+}
+/*Размер экрана меньше 650px*/
+@media screen and (max-width: 650px) {
+	.leftCol {
+		float: none;
+		width: 100%;
+	}
+	
+	.headerContent {
+		height: auto;
+		padding-bottom: 10px; 
+	}
+	
+	.logo {
+		display: block;
+		text-align: center;
+		float: none;
+	}
+	
+	ul.nav {
+		float: none;
+	}
+}
+/*Размер экрана меньше 480px*/
+@media screen and (max-width: 480px) {
+	html {
+		-webkit-text-size-adjust: none; /*Отключение регулировки размера шрифта*/
+	}
+	
+}
+/*Размер экрана меньше 320px*/
+@media screen and (max-width: 320px) {	
+	.mobile {
+		overflow-x: auto;
+		margin: 0;
+		padding: 0;
+	}
+	
+	textarea {
+		width: 200px;
+	}
+}
+/*Эластичные изображения*/
+img {
+	max-width: 100%;
+	height: auto;
+	width: auto\9;/*For ie8*/
+}
+
+/*Эластичные встраиваемые видео*/
+.video embed,
+.video object,
+.video iframe {
+	width: 100%;
+	height: auto;
+}

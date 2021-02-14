@@ -14,12 +14,18 @@
 			<div class="header">
 				<div class="headerContent">
 					<ul class="nav" style="float: left">
-						<li><a href="#">Телефонный справочник</a></li>
+						<li><a href="{% url 'home' %}">Телефонный справочник</a></li>
 					</ul>
 					<ul class="nav">
 						<li><a href="#">Поиск</a></li>
-						<li><a href="#">Войти</a></li>
-						<li><a href="#">Контакты</a></li>
+
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'logout' %}">Выйти</a></li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}">Войти</a></li>
+                        {% endif %}
+
+						<li><a href="{% url 'admin:index' %}">Админка</a></li>
 					</ul>
 				</div>
 			</div>

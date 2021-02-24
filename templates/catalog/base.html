@@ -25,7 +25,10 @@
                             <li><a href="{% url 'login' %}">Войти</a></li>
                         {% endif %}
 
-						<li><a href="{% url 'admin:index' %}">Админка</a></li>
+						{% if user.is_superuser %}
+                            <li><a href="{% url 'admin:index' %}">Админка</a></li>
+                        {% endif %}
+
 					</ul>
 				</div>
 			</div>

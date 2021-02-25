@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from .models import Employee, AdressDepartment, Department
 from django.contrib.auth.models import User, Group
 
 # Create your views here.
@@ -17,5 +18,12 @@ class IndexView(View):
 
         # num_visits = request.session.get('num_visits', 0)
         # request.session['num_visits'] = num_visits + 1
-        return render(request, 'catalog/index.html')
+
+
+        employees = Employee.objects.all()
+        departments = Department.objects.all()
+
+        context = {"employees": employees, "departments": departments}
+
+        return render(request, 'catalog/index.html', context)
 

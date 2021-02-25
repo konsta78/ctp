@@ -3,9 +3,40 @@
 
 {% block content %}
 
-	<b>Иванов Иван Иванович</b><br>
-    <i>Отдел бездельников</i><br>
-    <u>Главный специалист</u><br>
+        <table class="bordered">
+            <thead>
+            <tr>
+                <th>Сотрудник</th>
+                <th>Должность</th>
+                <th>Раб. телефон</th>
+                <th>№ каб.</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for department in departments %}
+                <tr>
+                    <td colspan="4" class="trdep">{{ department.name }}</td>
+                </tr>
+                {% for employee in employees  %}
+                    {% if employee.department == department %}
+                        <tr>
+                            <td>
+                                <b>
+                                    {{ employee.surname }}
+                                    {{ employee.name }}
+                                    {{ employee.patronymic|default_if_none:" " }}
+                                </b>
+                            </td>
+                            <td>{{ employee.position|default_if_none:"-" }}</td>
+                            <td>{{ employee.phone_work|default_if_none:"-" }}</td>
+                            <td>{{ employee.office|default_if_none:"-" }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            </tbody>
+        </table>
 
     {% if user.is_authenticated %}
         <b>День рождения: 30.02.2000</b>

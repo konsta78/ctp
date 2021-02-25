@@ -14,7 +14,7 @@
 			<div class="header">
 				<div class="headerContent">
 					<ul class="nav" style="float: left">
-						<li><a href="{% url 'home' %}">Телефонный справочник</a></li>
+						<li><a href="{% url 'home' %}">ОАО "Метрострой"</a></li>
 					</ul>
 					<ul class="nav">
 						<li><a href="#">Поиск</a></li>
@@ -25,32 +25,34 @@
                             <li><a href="{% url 'login' %}">Войти</a></li>
                         {% endif %}
 
-						{% if user.is_superuser %}
-                            <li><a href="{% url 'admin:index' %}">Админка</a></li>
-                        {% endif %}
-
 					</ul>
 				</div>
 			</div>
 			<div class="content">
-				<div class="leftCol">
-					<ul class="leftNav">
-						<li><a href="#">Руководство</a></li>
-						<li><a href="#">Отделы</a></li>
-						<li><a href="#">Специалисты</a></li>
+                <table>
+                    <tr>
+                        <td class="leftmenu">
+                            <div class="leftCol">
+                                <ul class="leftNav">
+                                    <li><a href="#">Руководство</a></li>
+                                    <li><a href="#">Отделы</a></li>
+                                    <li><a href="#">Специалисты</a></li>
+                                    <br>
+                                    {% if user.is_superuser %}
+                                        <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>
+                                        <li><a href="#">Обновить БД</a></li>
+                                    {% endif %}
+                                </ul>
+        				    </div>
+                        </td>
+                        <td width="100%">
+                            {% block content %}
 
-					</ul>
-
-				</div>
-				<div>
-                    {% block content %}
-
-                    {% endblock %}
-
-				</div>
-				</div>
-			</div>
-
+                            {% endblock %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
 		</div>
 	</body>
 </html>

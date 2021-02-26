@@ -17,12 +17,17 @@
 						<li><a href="{% url 'home' %}">ОАО "Метрострой"</a></li>
 					</ul>
 					<ul class="nav">
-						<li><a href="#">Поиск</a></li>
+                        <li>
+                            <form>
+						        <input type="text" placeholder="Поиск...">
+                            </form>
+                        </li>
+						<li><a href="#">Найти</a></li>
 
                         {% if user.is_authenticated %}
-                            <li><a href="{% url 'logout' %}">Выйти</a></li>
+                            <li><a href="{% url 'logout' %}">{{ user.username }}</a></li>
                         {% else %}
-                            <li><a href="{% url 'login' %}">Войти</a></li>
+                            <li><a href="{% url 'login' %}">Вход</a></li>
                         {% endif %}
 
 					</ul>
@@ -34,18 +39,19 @@
                         <td class="leftmenu">
                             <div class="leftCol">
                                 <ul class="leftNav">
-                                    <li><a href="#">Руководство</a></li>
+                                    <li><a href="{% url 'home' %}">На главную</a></li>
+                                    <li><a href="{% url 'governance' %}">Руководство</a></li>
                                     <li><a href="#">Отделы</a></li>
                                     <li><a href="#">Специалисты</a></li>
-                                    <br>
                                     {% if user.is_superuser %}
+                                        <br>
                                         <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>
                                         <li><a href="#">Обновить БД</a></li>
                                     {% endif %}
                                 </ul>
         				    </div>
                         </td>
-                        <td width="100%">
+                        <td width="100%" style="vertical-align: top">
                             {% block content %}
 
                             {% endblock %}

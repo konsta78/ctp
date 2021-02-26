@@ -10,22 +10,21 @@
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     <table>
+        <tr>
+          <td>Zimbra e-mail: </td>
+          <td>{{ form.username }}</td>
+        </tr>
 
-    <tr>
-      <td>Zimbra e-mail: </td>
-      <td>{{ form.username }}</td>
-    </tr>
-
-    <tr>
-      <td>Пароль: </td>
-      <td>{{ form.password }}</td>
-    </tr>
+        <tr>
+          <td>Пароль: </td>
+          <td>{{ form.password }}</td>
+        </tr>
     </table>
 
-    <input type="submit" value="login" />
+    <input type="submit" value="Вход">
 
     </form>
 
     {# Assumes you setup the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+    <p style="margin-top: 10px"><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
 {% endblock %}

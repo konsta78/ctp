@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from django.views import generic
 from .models import Employee, AdressDepartment, Department
 from django.contrib.auth.models import User, Group
 
@@ -27,3 +28,14 @@ class IndexView(View):
 
         return render(request, 'catalog/index.html', context)
 
+
+class GovernanceView(View):
+    def get(self, request):
+        employees = Employee.objects.all()
+        departments = Department.objects.filter(name='Руководство')
+        context = {"employees": employees, "departments": departments}
+        return render(request, 'catalog/index.html', context)
+
+
+class EmployeeDetail(generic.DetailView):
+    model = Employee

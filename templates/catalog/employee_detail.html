@@ -1,0 +1,46 @@
+{% extends "catalog/base.html" %}
+{% load static %}
+
+{% block content %}
+
+        <table class="bordered">
+            <tr>
+                <th width="30%">Фамилия, Имя, Отчество</th>
+                <td>{{ employee.surname }} {{ employee.name }} {{ employee.patronymic|default_if_none:" " }}</td>
+            </tr>
+            <tr>
+                <th>Отдел / Подразделение</th>
+                <td>{{ employee.department }}</td>
+            </tr>
+            <tr>
+                <th>Должность</th>
+                <td>{{ employee.position }}</td>
+            </tr>
+            <tr>
+                <th>№ кабинета</th>
+                <td>{{ employee.office|default_if_none:"-" }}</td>
+            </tr>
+            <tr>
+                <th>Раб. телефон</th>
+                <td>{{ employee.phone_work|default_if_none:"-" }}</td>
+            </tr>
+            {% if user.is_authenticated %}
+            <tr>
+                <th>Моб. телефон</th>
+                <td>{{ employee.phone_mob|default_if_none:"-" }}</td>
+            </tr>
+            <tr>
+                <th>E-mail</th>
+                <td>{{ employee.email|default_if_none:"-" }}</td>
+            </tr>
+            <tr>
+                <th>Дата рождения</th>
+                <td>{{ employee.dob|default_if_none:"-" }}</td>
+            </tr>
+            {% endif %}
+        </table>
+
+    <div style="text-align: center; margin-top: 10px">
+        <a href="{% url 'home' %}">На главную</a>
+    </div>
+{% endblock %}

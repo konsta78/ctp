@@ -20,12 +20,12 @@
                 {% for employee in employees  %}
                     {% if employee.department == department %}
                         <tr>
-                            <td>
-                                <b>
+                            <td width="30%">
+                                <b><a href="{{ employee.get_absolute_url }}">
                                     {{ employee.surname }}
                                     {{ employee.name }}
                                     {{ employee.patronymic|default_if_none:" " }}
-                                </b>
+                                </a></b>
                             </td>
                             <td>{{ employee.position|default_if_none:"-" }}</td>
                             <td>{{ employee.phone_work|default_if_none:"-" }}</td>

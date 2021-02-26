@@ -3,10 +3,18 @@
 	padding: 0;
 }
 
-/*a {*/
-/*	color: #ff8de3;*/
-/*	text-decoration: underline;*/
-/*}*/
+a {
+	color: #00688c;
+	text-decoration: none;
+}
+
+a.active {
+	color: #00688c;
+}
+
+a:hover {
+	color: #008c99;
+}
 
 html,body {
 	width: 100%;
@@ -192,6 +200,60 @@ ul.leftNav li a:hover {
 	/*border-radius: 3px;*/
 }
 
+
+ul.leftNav li {
+	list-style: none;
+}
+
+input[type=text],textarea,select {
+	padding: 1px;
+	/*height: auto;*/
+	border: 1px solid #292e35;
+	background-color: #f0f0f0;
+	/*box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
+	/*-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
+	/*-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
+}
+
+input[type=text] {
+	width: 250px;
+}
+
+input[type=submit] {
+	margin-top: 5px;
+	background-color: #008c99;
+	border: 1px solid #292e35;
+	color: white;
+	padding: 3px 10px 3px 10px;
+	/*width: 250px;*/
+}
+
+/*button {*/
+/*	cursor: pointer;*/
+/*	color: white;*/
+/*	font-size: 12px;*/
+/*	background-color: #a45f93;*/
+/*	background-repeat: no-repeat;*/
+/*    !*background-image: -ms-linear-gradient(top, #b76da5, #a45f93);*!*/
+/*    !*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b76da5), to(#a45f93));*!*/
+/*    !*background-image: -webkit-linear-gradient(top, #b76da5, #a45f93);*!*/
+/*    !*background-image: -o-linear-gradient(top, #b76da5, #a45f93);*!*/
+/*    !*background-image: linear-gradient(top, #b76da5, #a45f93);*!*/
+/*    !*background-image: -moz-linear-gradient(top, #b76da5, #a45f93);*!*/
+/*	!*filter: progid:dximagetransform.microsoft.gradient(startColorstr='#b76da5', endColorstr='#a45f93', GradientType=0);*!*/
+/*	border: none;*/
+/*	padding: 8px 20px 9px;*/
+/*	!*box-shadow: 0 2px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5);*!*/
+/*	!*-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5);*!*/
+/*	!*-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5);*!*/
+/*	text-shadow: none;*/
+/*	height: auto;*/
+/*}*/
+
+/*button:hover {*/
+/*	background-position: 0 -15px;*/
+/*}*/
+
 /**:first-child+html .content {*/
 /*	background-color: #475363;*/
 /*}*/
@@ -201,9 +263,6 @@ ul.leftNav li a:hover {
 /*}*/
 
 
-ul.leftNav li {
-	list-style: none;
-}
 
 /*ul.leftNav li:first-child a {*/
 /*	border-radius: 3px 3px 0 0;*/
@@ -312,15 +371,7 @@ ul.leftNav li {
 /*	display: inline-block;*/
 /*}*/
 
-/*input[type=text],textarea,select {*/
-/*	padding: 5px;*/
-/*	height: auto;*/
-/*	border: 1px solid white;*/
-/*	background-color: #f0f0f0;*/
-/*	box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
-/*	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
-/*	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
-/*}*/
+
 
 /*input[type=text],textarea,button {*/
 /*	-webkit-transition: all linear 0.2s;*/
@@ -338,9 +389,7 @@ ul.leftNav li {
 /*	float: left;*/
 /*}*/
 
-/*input[type=text] {*/
-/*	width: 200px;*/
-/*}*/
+
 
 /*select {*/
 /*	width: 210px;*/
@@ -371,31 +420,7 @@ ul.leftNav li {
 /*  color: #9c9c9c;*/
 /*}*/
 
-/*button {*/
-/*	cursor: pointer;*/
-/*	color: white;*/
-/*	font-size: 12px;*/
-/*	background-color: #a45f93;*/
-/*	background-repeat: no-repeat;*/
-/*    background-image: -ms-linear-gradient(top, #b76da5, #a45f93);*/
-/*    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b76da5), to(#a45f93));*/
-/*    background-image: -webkit-linear-gradient(top, #b76da5, #a45f93);*/
-/*    background-image: -o-linear-gradient(top, #b76da5, #a45f93);*/
-/*    background-image: linear-gradient(top, #b76da5, #a45f93);*/
-/*    background-image: -moz-linear-gradient(top, #b76da5, #a45f93);*/
-/*	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#b76da5', endColorstr='#a45f93', GradientType=0);*/
-/*	border: none;*/
-/*	padding: 8px 20px 9px;*/
-/*	box-shadow: 0 2px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5);*/
-/*	-webkit-box-shadow: 0 2px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5);*/
-/*	-moz-box-shadow: 0 2px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.5);*/
-/*	text-shadow: none;*/
-/*	height: auto;*/
-/*}*/
 
-/*button:hover {*/
-/*	background-position: 0 -15px;*/
-/*}*/
 
 /**:first-child+html button {*/
 /*	width: 90px;*/

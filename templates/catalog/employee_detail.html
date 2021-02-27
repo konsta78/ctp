@@ -10,7 +10,7 @@
             </tr>
             <tr>
                 <th>Отдел / Подразделение</th>
-                <td>{{ employee.department }}</td>
+                <td><a href="{% url 'governance' %}"><b>{{ employee.department }}</b></a></td>
             </tr>
             <tr>
                 <th>Должность</th>
@@ -25,22 +25,19 @@
                 <td>{{ employee.phone_work|default_if_none:"-" }}</td>
             </tr>
             {% if user.is_authenticated %}
-            <tr>
-                <th>Моб. телефон</th>
-                <td>{{ employee.phone_mob|default_if_none:"-" }}</td>
-            </tr>
-            <tr>
-                <th>E-mail</th>
-                <td>{{ employee.email|default_if_none:"-" }}</td>
-            </tr>
-            <tr>
-                <th>Дата рождения</th>
-                <td>{{ employee.dob|default_if_none:"-" }}</td>
-            </tr>
+                <tr>
+                    <th>Моб. телефон</th>
+                    <td>{{ employee.phone_mob|default_if_none:"-" }}</td>
+                </tr>
+                <tr>
+                    <th>E-mail</th>
+                    <td>{{ employee.email|default_if_none:"-" }}</td>
+                </tr>
+                <tr>
+                    <th>Дата рождения</th>
+                    <td>{{ employee.dob|default_if_none:"-" }}</td>
+                </tr>
             {% endif %}
         </table>
 
-    <div style="text-align: center; margin-top: 10px">
-        <a href="{% url 'home' %}">На главную</a>
-    </div>
 {% endblock %}

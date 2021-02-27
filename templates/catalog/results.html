@@ -1,0 +1,51 @@
+{% extends "catalog/base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <table class="bordered">
+        <tr>
+            <td colspan="2">
+                <b>Результаты поиска:</b>
+            </td>
+        </tr>
+        {% if employees %}
+            <tr>
+                <th width="30%" rowspan={{ count_emp }}>
+                    Сотрудник
+                </th>
+                {% for employee in employees %}
+                    <td>
+                        <b><a href="{{ employee.get_absolute_url }}">
+                                    {{ employee.surname }}
+                                    {{ employee.name }}
+                                    {{ employee.patronymic|default_if_none:" " }}
+                        </a></b>
+                    </td>
+                    </tr>
+                {% endfor %}
+        {% endif %}
+
+        {% if departments %}
+            <tr>
+                <th width="30%" rowspan={{ count_dep }}>
+                    Отдел / Подразделение
+                </th>
+                {% for department in departments %}
+                    <td>
+                        <b><a href="{% url 'governance' %}">{{ department.name }}</a></b>
+                    </td>
+                    </tr>
+                {% endfor %}
+        {% endif %}
+
+        {% if not employees or not departments %}
+            <tr>
+                <td colspan="2">
+                    По вашему запросу ничего не найдено. Попробуйте уточнить параметры поиска.
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+
+{% endblock %}

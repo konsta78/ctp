@@ -12,26 +12,26 @@
 	<body>
 		<div class="wrapper">
 			<div class="header">
-				<div class="headerContent">
-					<ul class="nav" style="float: left">
-						<li><a href="{% url 'home' %}">ОАО "Метрострой"</a></li>
-					</ul>
-					<ul class="nav">
-                        <li>
-                            <form>
-						        <input type="text" placeholder="Поиск...">
+                <table class="menu">
+                    <tr>
+                        <td>
+                            ОАО "Метрострой"
+                        </td>
+                        <td align="right">
+                            <form method="get" action="{% url 'results' %}">
+                                <input type="text" placeholder="Поиск..." name="search">
+                                <input type="submit" value="Найти">
                             </form>
-                        </li>
-						<li><a href="#">Найти</a></li>
-
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'logout' %}">{{ user.username }}</a></li>
-                        {% else %}
-                            <li><a href="{% url 'login' %}">Вход</a></li>
-                        {% endif %}
-
-					</ul>
-				</div>
+                        </td>
+                        <td align="center">
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}">{{ user.username }}</a>
+                            {% else %}
+                                <a href="{% url 'login' %}">Вход</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
 			</div>
 			<div class="content">
                 <table>

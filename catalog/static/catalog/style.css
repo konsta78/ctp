@@ -46,62 +46,6 @@ body {
 	margin-bottom: 20px;
 }
 
-.headerContent {
-	/*box-shadow: 0 3px 2px rgba(0,0,0,0.3);*/
-	/*-webkit-box-shadow: 0 3px 2px rgba(0,0,0,0.3);*/
-	/*-moz-box-shadow: 0 3px 2px rgba(0,0,0,0.3);*/
-	/*background-color: #f2f2f2;*/
-	background-color: #008c99;
-	/*background-repeat: no-repeat;*/
-    /*background-image: -ms-linear-gradient(top, #f2f2f2, #e4e4e4);*/
-    /*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f2f2f2), to(#e4e4e4));*/
-    /*background-image: -webkit-linear-gradient(top, #f2f2f2, #e4e4e4);*/
-    /*background-image: -o-linear-gradient(top, #f2f2f2, #e4e4e4);*/
-    /*background-image: linear-gradient(top, #f2f2f2, #e4e4e4);*/
-    /*background-image: -moz-linear-gradient(top, #f2f2f2, #e4e4e4);*/
-	/*filter: progid:dximagetransform.microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#e4e4e4', GradientType=0);*/
-	height: 33px;
-	border-radius: 3px;
-	border: 1px solid #67707d;
-	/*-webkit-border-radius: 3px;*/
-	/*-moz-border-radius: 3px;*/
-	padding-top: 10px;
-}
-
-/*Навигация*/
-ul.nav {
-	margin: 0;
-	padding: 3px 0 0 0;
-	overflow: hidden;
-	float: right;
-}
-
-ul.nav li {
-	float: left;
-	list-style: none;
-	padding: 0;
-}
-
-ul.nav li a {
-	font-size: 14px;
-	font-weight: bold;
-	color: white;
-	text-decoration: none;
-	padding: 0 30px;
-	display: block;
-	/*color: #143567;*/
-	/*text-shadow: 0 1px 0 white;*/
-}
-
-ul.nav li a.active {
-	/*color: #a45f93;*/
-	color: #00688c;
-}
-
-ul.nav li a:hover {
-	/*color: #a45f93;*/
-	color: #00688c;
-}
 /*Контент*/
 .content {
 	padding: 10px;
@@ -119,6 +63,29 @@ ul,ol,dl {
 	margin: 0 0 0 30px;
 }
 
+table.menu {
+	background-color: #008c99;
+	height: 50px;
+	border-radius: 3px;
+	border: 1px solid #67707d;
+	width: 100%;
+}
+
+table.menu td {
+	font-weight: bold;
+	vertical-align: center;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+table.menu td a {
+	color: white;
+	text-decoration: none;
+}
+
+table.menu td a:hover {
+	color: #00688c;
+}
 
 table.bordered {
 	/*margin: 0px 0;*/
@@ -205,28 +172,83 @@ ul.leftNav li {
 	list-style: none;
 }
 
-input[type=text],textarea,select {
+input[type=text], input[type=password] {
 	padding: 1px;
-	/*height: auto;*/
+	height: 20px;
 	border: 1px solid #292e35;
 	background-color: #f0f0f0;
-	/*box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
-	/*-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
-	/*-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.15);*/
-}
-
-input[type=text] {
 	width: 250px;
 }
 
+
 input[type=submit] {
-	margin-top: 5px;
+	/*margin-top: 5px;*/
+	font-weight: bold;
+	font-size: 14px;
 	background-color: #008c99;
-	border: 1px solid #292e35;
+	/*border: 1px solid #292e35;*/
+	border: 0;
 	color: white;
 	padding: 3px 10px 3px 10px;
 	/*width: 250px;*/
 }
+
+/*.headerContent {*/
+/*	!*box-shadow: 0 3px 2px rgba(0,0,0,0.3);*!*/
+/*	!*-webkit-box-shadow: 0 3px 2px rgba(0,0,0,0.3);*!*/
+/*	!*-moz-box-shadow: 0 3px 2px rgba(0,0,0,0.3);*!*/
+/*	!*background-color: #f2f2f2;*!*/
+/*	background-color: #008c99;*/
+/*	!*background-repeat: no-repeat;*!*/
+/*    !*background-image: -ms-linear-gradient(top, #f2f2f2, #e4e4e4);*!*/
+/*    !*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f2f2f2), to(#e4e4e4));*!*/
+/*    !*background-image: -webkit-linear-gradient(top, #f2f2f2, #e4e4e4);*!*/
+/*    !*background-image: -o-linear-gradient(top, #f2f2f2, #e4e4e4);*!*/
+/*    !*background-image: linear-gradient(top, #f2f2f2, #e4e4e4);*!*/
+/*    !*background-image: -moz-linear-gradient(top, #f2f2f2, #e4e4e4);*!*/
+/*	!*filter: progid:dximagetransform.microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#e4e4e4', GradientType=0);*!*/
+/*	height: 33px;*/
+/*	border-radius: 3px;*/
+/*	border: 1px solid #67707d;*/
+/*	!*-webkit-border-radius: 3px;*!*/
+/*	!*-moz-border-radius: 3px;*!*/
+/*	padding-top: 10px;*/
+/*}*/
+
+/*Навигация*/
+/*ul.nav {*/
+/*	margin: 0;*/
+/*	padding: 3px 0 0 0;*/
+/*	overflow: hidden;*/
+/*	float: right;*/
+/*}*/
+
+/*ul.nav li {*/
+/*	float: left;*/
+/*	list-style: none;*/
+/*	padding: 0;*/
+/*}*/
+
+/*ul.nav li a {*/
+/*	font-size: 14px;*/
+/*	font-weight: bold;*/
+/*	color: white;*/
+/*	text-decoration: none;*/
+/*	padding: 0 30px;*/
+/*	display: block;*/
+/*	!*color: #143567;*!*/
+/*	!*text-shadow: 0 1px 0 white;*!*/
+/*}*/
+
+/*ul.nav li a.active {*/
+/*	!*color: #a45f93;*!*/
+/*	color: #00688c;*/
+/*}*/
+
+/*ul.nav li a:hover {*/
+/*	!*color: #a45f93;*!*/
+/*	color: #00688c;*/
+/*}*/
 
 /*button {*/
 /*	cursor: pointer;*/

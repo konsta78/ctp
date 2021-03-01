@@ -1,0 +1,28 @@
+{% extends "catalog/base.html" %}
+{% load static %}
+
+{% block content %}
+
+        <table class="bordered">
+            <thead>
+            <tr>
+                <th>Наименование:</th>
+                <th>Адрес:</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for department in departments %}
+
+                <tr>
+                    <td style="text-align: left">
+                        <b><a href="{{ department.get_absolute_url }}">{{ department.name }}</a></b>
+                    </td>
+                    <td>{{ department.adress|default_if_none:"Не указан" }}</td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+{% endblock %}

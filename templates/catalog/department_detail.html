@@ -14,11 +14,9 @@
             </tr>
             </thead>
             <tbody>
-            {% for department in departments %}
                 <tr>
                     <td colspan="5" class="trdep">{{ department.name }}</td>
                 </tr>
-
                 {% for employee in employees  %}
                     {% if employee.department == department %}
                         <tr>
@@ -35,9 +33,8 @@
                             <td>{{ department.adress|default_if_none:"-" }}</td>
                         </tr>
                     {% endif %}
-
                 {% endfor %}
-            {% endfor %}
+
 
             </tbody>
         </table>

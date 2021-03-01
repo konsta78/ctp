@@ -13,6 +13,9 @@ class Department(models.Model):
     class Meta:
         ordering = ["priority"]
 
+    def get_absolute_url(self):
+        return reverse('department-detail', args=[str(self.id)])
+
     def __str__(self):
         return self.name
 
@@ -23,12 +26,16 @@ class AdressDepartment(models.Model):
     letter = models.CharField(max_length=20, verbose_name="Корпус/Литера", null=True, blank=True)
     room = models.CharField(max_length=20, verbose_name="Помещение", null=True, blank=True)
 
+    class Meta:
+        ordering = ["street"]
+
     def __str__(self):
-        if not self.letter:
-            self.letter = " "
-        if not self.room:
-            self.room = " "
-        return self.street + " " + self.building + self.letter + self.room
+        full_adress = self.street + ", " + self.building
+        if self.letter:
+            full_adress += ", " + self.letter
+        if self.room:
+            full_adress += ", " + self.room
+        return full_adress
 
 
 class Employee(models.Model):

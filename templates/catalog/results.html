@@ -39,7 +39,7 @@
                 {% endfor %}
         {% endif %}
 
-        {% if not employees or not departments %}
+        {% if not employees and not departments %}
             <tr>
                 <td colspan="2">
                     По вашему запросу ничего не найдено. Попробуйте уточнить параметры поиска.

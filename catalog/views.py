@@ -34,6 +34,13 @@ class GovernanceView(View):
         return render(request, 'catalog/index.html', context)
 
 
+class DepartmentsView(View):
+    def get(self, request):
+        departments = Department.objects.all().order_by('name')
+        context = {"departments": departments}
+        return render(request, 'catalog/departments.html', context)
+
+
 class ResultsView(View):
     def check_find(self, request):
         employees = Employee.objects.all()
@@ -71,3 +78,12 @@ class ResultsView(View):
 
 class EmployeeDetail(generic.DetailView):
     model = Employee
+
+
+class DepartmentDetail(generic.DetailView):
+    model = Department
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employees'] = Employee.objects.all()
+        return context

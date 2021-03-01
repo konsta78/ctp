@@ -101,14 +101,17 @@ table.bordered {
 	border-spacing: 0;
 }
 
-table.bordered th, table.bordered td {
+table.bordered th {
 	padding: 10px;
-	vertical-align: top;
+	vertical-align: center;
+	/*text-align: center;*/
 	border: 1px solid #4c545e;
 }
 
 table.bordered td {
-	/*border: 1px solid #4c545e;*/
+	padding: 10px;
+	vertical-align: center;
+	border: 1px solid #4c545e;
 	color: #00688c;
 }
 

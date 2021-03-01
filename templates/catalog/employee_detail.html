@@ -10,7 +10,7 @@
             </tr>
             <tr>
                 <th>Отдел / Подразделение</th>
-                <td><a href="{% url 'governance' %}"><b>{{ employee.department }}</b></a></td>
+                <td><a href="{{ employee.department.get_absolute_url }}"><b>{{ employee.department }}</b></a></td>
             </tr>
             <tr>
                 <th>Должность</th>

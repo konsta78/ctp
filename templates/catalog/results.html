@@ -33,7 +33,7 @@
                 </th>
                 {% for department in departments %}
                     <td>
-                        <b><a href="{% url 'governance' %}">{{ department.name }}</a></b>
+                        <b><a href="{{ department.get_absolute_url }}">{{ department|safe }}</a></b>
                     </td>
                     </tr>
                 {% endfor %}

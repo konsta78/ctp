@@ -63,6 +63,14 @@ class ResultsView(View):
 
             for department in departments:
                 if search.lower() in department.name.lower():
+                    if department.name.lower().startswith(search.lower()):
+                        tmp_str = department.name.lower().replace(search.lower(),
+                            "<span style='background-color: yellow'>" + search.capitalize() + "</span>")
+                    else:
+                        tmp_str = department.name.lower().replace(search.lower(),
+                            "<span style='background-color: yellow'>" + search.lower() + "</span>").capitalize()
+
+                    # objects_departments.append(tmp_str) # для подстветки, но не передается весь объект - department
                     objects_departments.append(department)
 
             context = {"employees": objects_employess, "departments": objects_departments,

@@ -46,7 +46,8 @@
                                     {% if user.is_superuser %}
                                         <br>
                                         <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>
-                                        <li><a href="#">Обновить БД</a></li>
+                                        <li><a href="{% url 'upload_db' %}">Обновить БД</a></li>
+                                        <li><a href="{% url 'delete_db' %}">Удалить БД</a></li>
                                     {% endif %}
                                 </ul>
         				    </div>

@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <th>Должность</th>
-                <td>{{ employee.position }}</td>
+                <td>{{ employee.position|default_if_none:"-" }}</td>
             </tr>
             <tr>
                 <th>№ кабинета</th>

@@ -3,6 +3,7 @@ from django.views import View
 from django.views import generic
 from .models import Employee, AdressDepartment, Department
 from django.contrib.auth.models import User, Group
+from openpyxl import load_workbook
 
 
 class IndexView(View):
@@ -95,3 +96,80 @@ class DepartmentDetail(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['employees'] = Employee.objects.all()
         return context
+
+
+class LoadDataBaseView(View):
+    def get(self, request):
+        if request.user.is_superuser:
+
+            AdressDepartment.objects.update_or_create(
+                id=1,
+                street='Загородный пр.',
+                building='д. 52а',
+                letter='Литер А',
+                room='пом. 1Н'
+            )
+
+            start_cell = 4
+            file = 'test.xlsx'
+            wb = load_workbook(file)
+            sheet = wb.active
+            vertical_merged = []
+            departments_cells = []
+
+            for cell in range(start_cell, sheet.max_row + 1):
+                value = sheet[f'A{cell}'].value
+                if value is not None:
+                    vertical_merged.append(cell)
+
+            vertical_merged.append(sheet.max_row)
+
+            for i in range(1, len(vertical_merged)):
+                departments_cells.append([vertical_merged[i - 1], vertical_merged[i] - vertical_merged[i - 1]])
+
+            for index in range(len(departments_cells)):
+                Department.objects.update_or_create(
+                    id=index + 1,
+                    name=sheet[f'A{departments_cells[index][0]}'].value,
+                    adress=AdressDepartment.objects.get(id=1),
+                    priority=index
+                )
+
+                for i in range(departments_cells[index][1]):
+                    current_cell = departments_cells[index][0] + i
+                    print(current_cell, sheet[f'B{current_cell}'].value)
+
+                    if sheet[f'C{current_cell}'].value is None:
+                        print('merge!')
+                    elif sheet[f'D{current_cell}'].value is None:
+                        print('Empty!')
+                    else:
+                        fio = str(sheet[f'D{current_cell}'].value).split()
+                        if len(fio) < 3:
+                            fio.append(' ')
+                        Employee.objects.update_or_create(
+                                        surname=fio[0],
+                                        name=fio[1],
+                                        patronymic=fio[2],
+                                        position=sheet[f'C{current_cell}'].value,
+                                        department=Department.objects.get(id=index+1),
+                                        phone_work=sheet[f'E{current_cell}'].value,
+                                        phone_mob=sheet[f'G{current_cell}'].value,
+                                        email=sheet[f'H{current_cell}'].value,
+                                        office=sheet[f'I{current_cell}'].value,
+                                        dob=None
+                        )
+
+            employees = Employee.objects.all()
+            departments = Department.objects.all()
+            context = {"employees": employees, "departments": departments}
+            return render(request, 'catalog/index.html', context)
+
+
+class DeleteDataBaseView(View):
+    def get(self, request):
+        if request.user.is_superuser:
+            Employee.objects.all().delete()
+            Department.objects.all().delete()
+            AdressDepartment.objects.all().delete()
+            return render(request, 'catalog/index.html')

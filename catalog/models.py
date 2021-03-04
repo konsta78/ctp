@@ -42,7 +42,7 @@ class Employee(models.Model):
     surname = models.CharField(max_length=30, verbose_name='Фамилия')
     name = models.CharField(max_length=30, verbose_name='Имя')
     patronymic = models.CharField(max_length=30, verbose_name='Отчество', null=True, blank=True)
-    position = models.TextField(max_length=100, verbose_name='Должность')
+    position = models.TextField(max_length=100, verbose_name='Должность', null=True, blank=True)
     department = models.ForeignKey('Department', on_delete=models.SET_NULL, verbose_name='Отдел/подзразделение', null=True, blank=True)
     phone_work = models.CharField(max_length=15, verbose_name='Рабочий телефон', null=True, blank=True)
     phone_mob = models.CharField(max_length=30, verbose_name='Мобильный телефон', null=True, blank=True)
@@ -51,7 +51,7 @@ class Employee(models.Model):
     dob = models.CharField(max_length=20, verbose_name='Дата рождения', null=True, blank=True)
 
     class Meta:
-        ordering = ["surname"]
+        ordering = ["id"]
 
     def get_absolute_url(self):
         return reverse('employee', args=[str(self.id)])

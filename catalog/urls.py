@@ -1,5 +1,6 @@
 from django.urls import path, include
-from catalog.views import IndexView, EmployeeDetail, GovernanceView, ResultsView, DepartmentsView, DepartmentDetail
+from catalog.views import IndexView, EmployeeDetail, GovernanceView, \
+    ResultsView, DepartmentsView, DepartmentDetail, LoadDataBaseView, DeleteDataBaseView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='home'),
@@ -9,4 +10,6 @@ urlpatterns = [
     path('departments/', DepartmentsView.as_view(), name='department'),
     path('departments/<int:pk>', DepartmentDetail.as_view(), name='department-detail'),
     path('results/', ResultsView.as_view(), name='results'),
+    path('upload/', LoadDataBaseView.as_view(), name='upload_db'),
+    path('delete/', DeleteDataBaseView.as_view(), name='delete_db'),
 ]

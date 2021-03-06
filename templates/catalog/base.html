@@ -42,7 +42,7 @@
                                     <li><a href="{% url 'home' %}">На главную</a></li>
                                     <li><a href="{% url 'governance' %}">Руководство</a></li>
                                     <li><a href="{% url 'department' %}">Отделы</a></li>
-                                    <li><a href="#">Адреса</a></li>
+                                    <li><a href="{% url 'addresses' %}">Адреса</a></li>
                                     {% if user.is_superuser %}
                                         <br>
                                         <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>

@@ -11,7 +11,7 @@
         </tr>
         {% if employees %}
             <tr>
-                <th width="30%" rowspan={{ count_emp }}>
+                <th width="30%" style="vertical-align: top" rowspan={{ count_emp }}>
                     Сотрудник
                 </th>
                 {% for employee in employees %}
@@ -28,7 +28,7 @@
 
         {% if departments %}
             <tr>
-                <th width="30%" rowspan={{ count_dep }}>
+                <th width="30%" style="vertical-align: top" rowspan={{ count_dep }}>
                     Отдел / Подразделение
                 </th>
                 {% for department in departments %}

@@ -6,6 +6,7 @@
         <table class="bordered">
             <thead>
             <tr>
+                <th>№ п/п</th>
                 <th>Сотрудник</th>
                 <th>Должность</th>
                 <th>Раб. телефон</th>
@@ -16,17 +17,16 @@
             <tbody>
             {% for department in departments %}
                 <tr>
-                    <td colspan="5" class="trdep">{{ department.name }}</td>
+                    <td colspan="6" class="trdep">{{ department.name }}</td>
                 </tr>
 
                 {% for employee in employees  %}
                     {% if employee.department == department %}
                         <tr>
+                            <td align="center">{{ employee.id }}</td>
                             <td width="30%">
                                 <b><a href="{{ employee.get_absolute_url }}">
-                                    {{ employee.surname }}
-                                    {{ employee.name }}
-                                    {{ employee.patronymic|default_if_none:" " }}
+                                    {{ employee }}
                                 </a></b>
                             </td>
                             <td>{{ employee.position|default_if_none:"-" }}</td>

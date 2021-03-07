@@ -6,7 +6,7 @@
         <table class="bordered">
             <tr>
                 <th width="30%">Фамилия, Имя, Отчество</th>
-                <td>{{ employee.surname }} {{ employee.name }} {{ employee.patronymic|default_if_none:" " }}</td>
+                <td>{{ employee }}</td>
             </tr>
             <tr>
                 <th>Отдел / Подразделение</th>
@@ -23,6 +23,10 @@
             <tr>
                 <th>Раб. телефон</th>
                 <td>{{ employee.phone_work|default_if_none:"-" }}</td>
+            </tr>
+            <tr>
+                <th>Адрес</th>
+                <td>{{ employee.department.adress }}</td>
             </tr>
             {% if user.is_authenticated %}
                 <tr>

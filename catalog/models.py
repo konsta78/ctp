@@ -57,4 +57,8 @@ class Employee(models.Model):
         return reverse('employee', args=[str(self.id)])
 
     def __str__(self):
-        return self.surname+" "+self.name
+        full_name = self.surname + " " + self.name
+        if self.patronymic:
+            full_name += " " + self.patronymic
+
+        return full_name

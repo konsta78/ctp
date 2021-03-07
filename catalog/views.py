@@ -81,6 +81,10 @@ class ResultsView(View):
         """
         employees = Employee.objects.all()
         departments = Department.objects.all()
+
+        emp_changes_name = {}  # словарь с измененными ФИО сотрудников (подстветка строки поиска)
+        dep_changes_name = {}  # словарь с измененными наименованиями отделов (подстветка строки поиска)
+
         search = request.GET.get('search')
 
         if search == "":  # при пустом поле поиска возращаемся на главную страницу
@@ -91,10 +95,17 @@ class ResultsView(View):
             objects_departments = []  # список отделов по результатам поиска
 
             for employee in employees:  # поиск среди сотрудников по ФИО
-                if (search.lower() in employee.surname.lower() or
-                search.lower() in employee.name.lower() or
-                search.lower() in employee.patronymic.lower()):
-
+                if search.lower() in str(employee).lower():
+                    tmp = str(employee).split()
+                    for i in range(len(tmp)):
+                        if tmp[i].lower().startswith(search.lower()):
+                            tmp[i] = tmp[i].lower().replace(search.lower(),
+                            "<span style='background-color: yellow'>" + search.capitalize() + "</span>")
+                        else:
+                            tmp[i] = tmp[i].replace(search.lower(),
+                            "<span style='background-color: yellow'>" + search.lower() + "</span>").capitalize()
+                    tmp_str = " ".join(tmp)
+                    emp_changes_name[employee.id] = tmp_str
                     objects_employess.append(employee)
 
             for department in departments:  # поиск отделов по их наименованию
@@ -106,11 +117,12 @@ class ResultsView(View):
                         tmp_str = department.name.lower().replace(search.lower(),
                             "<span style='background-color: yellow'>" + search.lower() + "</span>").capitalize()
 
-                    # objects_departments.append(tmp_str) # для подстветки, но не передается весь объект - department
+                    dep_changes_name[department.id] = tmp_str  # наименование отдела с подстветкой строки поиска
                     objects_departments.append(department)
 
             context = {"employees": objects_employess, "departments": objects_departments,
-                       "count_emp": len(objects_employess), "count_dep": len(objects_departments)}
+                       "count_emp": len(objects_employess), "count_dep": len(objects_departments),
+                       "dep_changes_name": dep_changes_name, "emp_changes_name": emp_changes_name}
             template = 'catalog/results.html'
 
         return context, template
@@ -219,6 +231,7 @@ class LoadDataBaseView(View):
                         if len(fio) < 3:
                             fio.append(' ')
                         Employee.objects.update_or_create(
+                                        id=current_cell - 3,
                                         surname=fio[0],
                                         name=fio[1],
                                         patronymic=fio[2],

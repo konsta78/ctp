@@ -5,7 +5,7 @@
 
     <table class="bordered">
         <tr>
-            <td colspan="2">
+            <td colspan="3">
                 <b>Результаты поиска:</b>
             </td>
         </tr>
@@ -15,12 +15,14 @@
                     Сотрудник
                 </th>
                 {% for employee in employees %}
-                    <td>
+                    <td width="30%">
                         <b><a href="{{ employee.get_absolute_url }}">
-                                    {{ employee.surname }}
-                                    {{ employee.name }}
-                                    {{ employee.patronymic|default_if_none:" " }}
+                                    {{ emp_changes_name|get_item:employee.id|safe }}
                         </a></b>
+
+                    </td>
+                    <td>
+                        {{ employee.position }}
                     </td>
                     </tr>
                 {% endfor %}
@@ -32,8 +34,8 @@
                     Отдел / Подразделение
                 </th>
                 {% for department in departments %}
-                    <td>
-                        <b><a href="{{ department.get_absolute_url }}">{{ department|safe }}</a></b>
+                    <td colspan="2">
+                        <b><a href="{{ department.get_absolute_url }}">{{ dep_changes_name|get_item:department.id|safe }}</a></b>
                     </td>
                     </tr>
                 {% endfor %}

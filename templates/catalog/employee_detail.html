@@ -21,8 +21,12 @@
                 <td>{{ employee.office|default_if_none:"-" }}</td>
             </tr>
             <tr>
-                <th>Раб. телефон</th>
+                <th>Рабочий телефон</th>
                 <td>{{ employee.phone_work|default_if_none:"-" }}</td>
+            </tr>
+            <tr>
+                <th>Добавочный номер</th>
+                <td>{{ employee.phone_work_additional|default_if_none:"-" }}</td>
             </tr>
             <tr>
                 <th>Адрес</th>
@@ -30,7 +34,7 @@
             </tr>
             {% if user.is_authenticated %}
                 <tr>
-                    <th>Моб. телефон</th>
+                    <th>Мобильный телефон</th>
                     <td>{{ employee.phone_mob|default_if_none:"-" }}</td>
                 </tr>
                 <tr>

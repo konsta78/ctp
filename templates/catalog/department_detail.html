@@ -9,26 +9,26 @@
                 <th>Сотрудник</th>
                 <th>Должность</th>
                 <th>Раб. телефон</th>
+                <th>Доб. номер</th>
                 <th>№ каб.</th>
                 <th>Адрес</th>
             </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="5" class="trdep">{{ department.name }}</td>
+                    <td colspan="6" class="trdep">{{ department.name }}</td>
                 </tr>
                 {% for employee in employees  %}
                     {% if employee.department == department %}
                         <tr>
                             <td width="30%">
                                 <b><a href="{{ employee.get_absolute_url }}">
-                                    {{ employee.surname }}
-                                    {{ employee.name }}
-                                    {{ employee.patronymic|default_if_none:" " }}
+                                    {{ employee }}
                                 </a></b>
                             </td>
                             <td>{{ employee.position|default_if_none:"-" }}</td>
                             <td>{{ employee.phone_work|default_if_none:"-" }}</td>
+                            <td>{{ employee.phone_work_additional|default_if_none:"-" }}</td>
                             <td>{{ employee.office|default_if_none:"-" }}</td>
                             <td>{{ department.adress|default_if_none:"-" }}</td>
                         </tr>

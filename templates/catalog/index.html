@@ -10,6 +10,7 @@
                 <th>Сотрудник</th>
                 <th>Должность</th>
                 <th>Раб. телефон</th>
+                <th>Доб. номер</th>
                 <th>№ каб.</th>
                 <th>Адрес</th>
             </tr>
@@ -17,13 +18,21 @@
             <tbody>
             {% for department in departments %}
                 <tr>
-                    <td colspan="6" class="trdep">{{ department.name }}</td>
+                    <td colspan="7" class="trdep">{{ department.name }}</td>
                 </tr>
 
                 {% for employee in employees  %}
                     {% if employee.department == department %}
+                        {% for sub_department in sub_departments %}
+                            {% if employee.id == sub_department.id_employee %}
+                                <tr>
+                                    <td align="center" colspan="7" style="background-color: lightblue">
+                                        <b>{{ sub_department.sub_name }}</b></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
                         <tr>
-                            <td align="center">{{ employee.id }}</td>
+                            <td align="center" width="5%">{{ employee.id }}</td>
                             <td width="30%">
                                 <b><a href="{{ employee.get_absolute_url }}">
                                     {{ employee }}
@@ -31,6 +40,7 @@
                             </td>
                             <td>{{ employee.position|default_if_none:"-" }}</td>
                             <td>{{ employee.phone_work|default_if_none:"-" }}</td>
+                            <td>{{ employee.phone_work_additional|default_if_none:"-" }}</td>
                             <td>{{ employee.office|default_if_none:"-" }}</td>
                             <td>{{ department.adress|default_if_none:"-" }}</td>
                         </tr>

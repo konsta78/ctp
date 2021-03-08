@@ -43,8 +43,10 @@
                                     <li><a href="{% url 'governance' %}">Руководство</a></li>
                                     <li><a href="{% url 'department' %}">Отделы</a></li>
                                     <li><a href="{% url 'addresses' %}">Адреса</a></li>
-                                    {% if user.is_superuser %}
-                                        <br>
+                                </ul>
+                                <br>
+                                {% if user.is_superuser %}
+                                <ul class="leftNav">
                                         <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>
                                         <li><a href="{% url 'upload_db' %}">Обновить БД</a></li>
                                         <li><a href="{% url 'delete_db' %}">Удалить БД</a></li>
@@ -60,6 +62,15 @@
                     </tr>
                 </table>
             </div>
+            <div class="header" style="padding-bottom: 20px">
+                <table class="menu">
+                    <tr>
+                        <td>
+                            Контакты
+                        </td>
+                    </tr>
+                </table>
+			</div>
 		</div>
 	</body>
 </html>

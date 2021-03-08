@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import View
 from django.views import generic
-from .models import Employee, AdressDepartment, Department
+from .models import Employee, AdressDepartment, Department, SubdivisionDepartament
 from django.contrib.auth.models import User, Group
 from openpyxl import load_workbook
 from django.template.defaulttags import register
+from . import addresses
+import re
 
 
 # декоратор для передачи в шаблон значения из словаря по ключу
@@ -28,7 +30,10 @@ class IndexView(View):
 
         employees = Employee.objects.all()
         departments = Department.objects.all()
-        context = {"employees": employees, "departments": departments}
+        sub_departments = SubdivisionDepartament.objects.all()
+        context = {"employees": employees,
+                   "departments": departments,
+                   "sub_departments": sub_departments}
         return render(request, 'catalog/index.html', context)
 
 
@@ -161,16 +166,47 @@ class LoadDataBaseView(View):
     """
     Загрузка данных из excel-файла и отображение на текущей странице
     """
-    def create_adress(self):
+    def read_excel_file(self, file):
+        """
+        Функция открытия/чтения excel-файла и создания списков ячеек
+        :param file: имя входного excel-файла
+        :return: рабочую страницу и списки horizontal_merged, departments_cells
+        """
+        start_cell = 4  # начальная ячейка для парсинга
+        wb = load_workbook(file)
+        sheet = wb.active
+        vertical_merged = []  # список номеров ячеек. являющихся первыми в вертикальных объединенных группах
+        horizontal_merged = []  # список номеров горизонтальных объединенных ячеек и их значений
+        departments_cells = []  # в список ячеек добавляется размер объединенной группы
+
+        # создание списков vertical_merged и horizontal_merged
+        for cell in range(start_cell, sheet.max_row + 1):
+            value = sheet[f'A{cell}'].value
+            if value is not None:
+                vertical_merged.append(cell)
+            if not str(sheet[f'B{cell}'].value).isdigit():
+                horizontal_merged.append([cell - start_cell + 1, sheet[f'B{cell}'].value])
+
+        # добавляем в список номер последней строки для корректного подсчета диапазона
+        vertical_merged.append(sheet.max_row)
+
+        # добавляем размер объединенной группы
+        for i in range(1, len(vertical_merged)):
+            departments_cells.append([vertical_merged[i - 1],
+                                      vertical_merged[i] - vertical_merged[i - 1]])
+
+        return sheet, horizontal_merged, departments_cells
+
+    def create_addresses(self):
         """
         Функция создание записей в БД с адресами объектов
-        :return: None
+        :return: запись данных в БД
         """
-        street_lst = ['Загодордный пр.', 'Подъездной пер.', 'ул. Маршала Говорова',
-                      'Благодатная ул.', 'ул. Ново-Никитинская', 'ул. Рощинская']
-        buildeing_lst = ['д. 52а', 'д. 9', 'д. 39', 'д. 47', 'д. 3', 'д. 24']
-        letter_lst = ['Литер А', '', '', '', '', '']
-        room_lst = ['пом. 1Н', '', '', '', '', '']
+        street_lst = addresses.street_lst
+        buildeing_lst = addresses.buildeing_lst
+        letter_lst = addresses.letter_lst
+        room_lst = addresses.room_lst
+
         for i in range(len(street_lst)):
             AdressDepartment.objects.update_or_create(
                 id=i + 1,
@@ -180,6 +216,87 @@ class LoadDataBaseView(View):
                 room=room_lst[i]
             )
 
+    def create_subdivision_departament(self, horisontal_merged):
+        """
+        Функция создание записей в БД с подотделами
+        :param horisontal_merged: список горизонтальных объединенных ячеек с наименованиями подотделов
+        :return: запись данных в БД
+        """
+        for k in range(len(horisontal_merged)):
+            SubdivisionDepartament.objects.update_or_create(
+                id=k + 1,
+                sub_name=horisontal_merged[k][1],
+                id_employee=horisontal_merged[k][0] + 1
+            )
+
+    def create_departments_and_employees(self, sheet, departments_cells):
+        """
+        Функция создания записей отделов и сотрудников в базе данных
+        :param sheet: рабочий лист excel-файла
+        :param departments_cells: список с объединенными ячейками с наименованиями отделов
+        :return: запись данных в БД
+        """
+        def create_departments():
+            """
+            Создание отделов
+            :return: запись данных в БД
+            """
+            Department.objects.update_or_create(
+                id=index + 1,
+                name=sheet[f'A{departments_cells[index][0]}'].value,
+                adress=AdressDepartment.objects.get(id=address_id),
+                priority=index
+            )
+
+        def create_employees():
+            """
+            Создание сотрудников
+            :return: запись данных в БД
+            """
+            for i in range(departments_cells[index][1]):
+                current_cell = departments_cells[index][0] + i
+
+                # обработка пустых ячеек столбца 'С'
+                if sheet[f'C{current_cell}'].value is None:
+                    pass
+                    # print('Поле "С" пустое!')
+
+                # обработка пустых ячеек столбца 'D'
+                elif sheet[f'D{current_cell}'].value is None:
+                    pass
+                    # fio = [" ", " ", " "]
+                else:
+                    fio = str(sheet[f'D{current_cell}'].value).split()  # список с ФИО
+                    if len(fio) < 3:
+                        fio.append(' ')
+                    Employee.objects.update_or_create(
+                        id=current_cell - 3,
+                        surname=fio[0],
+                        name=fio[1],
+                        patronymic=fio[2],
+                        position=sheet[f'C{current_cell}'].value,
+                        department=Department.objects.get(id=index + 1),
+                        phone_work=sheet[f'E{current_cell}'].value,
+                        phone_work_additional=sheet[f'F{current_cell}'].value,
+                        phone_mob=sheet[f'G{current_cell}'].value,
+                        email=sheet[f'H{current_cell}'].value,
+                        office=sheet[f'I{current_cell}'].value,
+                        dob=None
+                    )
+
+        # поиск адресов в ячейках excel-файла и назначение их соответствующим отделам
+        for index in range(len(departments_cells)):
+            address_id = 1
+            if sheet[f'J{departments_cells[index][0]}'].value is not None:
+                tmp = sheet[f'J{departments_cells[index][0]}'].value
+                nums = "д. " + re.findall(r'\d+', tmp)[0]  # поиск по номеру дома
+                for k in range(len(addresses.buildeing_lst)):
+                    if nums == addresses.buildeing_lst[k]:
+                        address_id = k + 1
+
+            create_departments()
+            create_employees()
+
     def get(self, request):
         """
         Отображение страницы с результатами загрузки данных из excel-файла
@@ -187,66 +304,17 @@ class LoadDataBaseView(View):
         :return: render / redirect
         """
         if request.user.is_superuser:
-
-            self.create_adress()
-
-            start_cell = 4  # начальная ячейка для парсинга
-            file = 'test.xlsx'
-            wb = load_workbook(file)
-            sheet = wb.active
-            vertical_merged = []  # список номеров ячеек. являющихся первыми в объединенных группах
-            departments_cells = []  # в список ячеек добавляется размер объединенной группы
-
-            for cell in range(start_cell, sheet.max_row + 1):  # поиск объединенных ячеек на листе
-                value = sheet[f'A{cell}'].value
-                if value is not None:
-                    vertical_merged.append(cell)
-
-            vertical_merged.append(sheet.max_row)
-
-            for i in range(1, len(vertical_merged)):  # добавляем размер объединенной группы
-                departments_cells.append([vertical_merged[i - 1],
-                                          vertical_merged[i] - vertical_merged[i - 1]])
-
-            # создание записей в БД с информацией об отделах
-            for index in range(len(departments_cells)):
-                Department.objects.update_or_create(
-                    id=index + 1,
-                    name=sheet[f'A{departments_cells[index][0]}'].value,
-                    adress=AdressDepartment.objects.get(id=1),
-                    priority=index
-                )
-
-                # создание записей в БД с иформацией о сотруднике текущего отдела
-                for i in range(departments_cells[index][1]):
-                    current_cell = departments_cells[index][0] + i
-                    print(current_cell, sheet[f'B{current_cell}'].value)
-
-                    if sheet[f'C{current_cell}'].value is None:  # обработка пустых ячеек столбца 'С'
-                        print('merge!')
-                    elif sheet[f'D{current_cell}'].value is None:  # обработка пустых ячеек столбца 'D'
-                        print('Empty!')
-                    else:
-                        fio = str(sheet[f'D{current_cell}'].value).split()  # список с ФИО
-                        if len(fio) < 3:
-                            fio.append(' ')
-                        Employee.objects.update_or_create(
-                                        id=current_cell - 3,
-                                        surname=fio[0],
-                                        name=fio[1],
-                                        patronymic=fio[2],
-                                        position=sheet[f'C{current_cell}'].value,
-                                        department=Department.objects.get(id=index+1),
-                                        phone_work=sheet[f'E{current_cell}'].value,
-                                        phone_mob=sheet[f'G{current_cell}'].value,
-                                        email=sheet[f'H{current_cell}'].value,
-                                        office=sheet[f'I{current_cell}'].value,
-                                        dob=None
-                        )
+            self.create_addresses()
+            sheet, horizontal_merged, departments_cells = self.read_excel_file('test.xlsx')
+            self.create_subdivision_departament(horizontal_merged)
+            self.create_departments_and_employees(sheet, departments_cells)
 
             employees = Employee.objects.all()
             departments = Department.objects.all()
-            context = {"employees": employees, "departments": departments}
+            sub_departments = SubdivisionDepartament.objects.all()
+            context = {"employees": employees,
+                       "departments": departments,
+                       "sub_departments": sub_departments}
             return render(request, 'catalog/index.html', context)
 
         else:
@@ -260,6 +328,7 @@ class DeleteDataBaseView(View):
     def get(self, request):
         if request.user.is_superuser:
             Employee.objects.all().delete()
+            SubdivisionDepartament.objects.all().delete()
             Department.objects.all().delete()
             AdressDepartment.objects.all().delete()
             return render(request, 'catalog/index.html')

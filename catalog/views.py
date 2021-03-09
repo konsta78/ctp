@@ -339,20 +339,15 @@ class EmployeeListView(View):
         if request.user.is_superuser:
             employees = Employee.objects.all()
             group = Group.objects.get(name="Employees")
-
+            max_count = Employee.objects.all().count()
             for employee in employees:
                 if employee.email:
-                    print(employee.email)
-                    user = User.objects.create_user(employee.surname, employee.email, '0000')
-                    print('user ok')
-                    user.first_name = employee.name
-                    print('first ok', employee.name)
-                    user.last_name = employee.surname
-                    print('last ok')
-                    # user.email = employee.email
-                    # print('email ok')
+                    name = str(employee) # login == email unique = true
+                    user = User.objects.create_user(name, employee.email, '0000')
+                    user.first_name = employee.surname
+                    user.last_name = employee.name
+                    if employee.patronymic:
+                        user.last_name += " " + employee.patronymic
                     user.save()
-                    print('save ok')
                     group.user_set.add(user)
-                    print('YES')
             return redirect(reverse('home'))

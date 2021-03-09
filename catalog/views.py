@@ -330,9 +330,7 @@ class DeleteDataBaseView(View):
             SubdivisionDepartament.objects.all().delete()
             Department.objects.all().delete()
             AdressDepartment.objects.all().delete()
-            return render(request, 'catalog/index.html')
-        else:
-            return redirect(reverse('home'))
+        return redirect(reverse('home'))
 
 
 class UsersListView(View):
@@ -361,7 +359,7 @@ class UsersListView(View):
                             print("created ", employee)
                     except:
                         pass
-            return redirect(reverse('home'))
+        return redirect(reverse('home'))
 
 
 class UsersDeleteView(View):

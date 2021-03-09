@@ -157,6 +157,7 @@ class DepartmentDetail(generic.DetailView):
         """
         context = super().get_context_data(**kwargs)
         context['employees'] = Employee.objects.all()
+        context['sub_departments'] = SubdivisionDepartament.objects.all()
         return context
 
 
@@ -321,7 +322,7 @@ class LoadDataBaseView(View):
 
 class DeleteDataBaseView(View):
     """
-    Отображение страницы при удалении удаления БД
+    Отображение страницы при удалении БД
     """
     def get(self, request):
         if request.user.is_superuser:
@@ -334,20 +335,40 @@ class DeleteDataBaseView(View):
             return redirect(reverse('home'))
 
 
-class EmployeeListView(View):
+class UsersListView(View):
+    """
+    Создание аккаунтов сотрудников, имеющих рабочий e-mail
+    и добавление их в группу "Employees"
+    """
     def get(self, request):
         if request.user.is_superuser:
             employees = Employee.objects.all()
             group = Group.objects.get(name="Employees")
-            max_count = Employee.objects.all().count()
+
             for employee in employees:
                 if employee.email:
-                    name = str(employee) # login == email unique = true
-                    user = User.objects.create_user(name, employee.email, '0000')
-                    user.first_name = employee.surname
-                    user.last_name = employee.name
-                    if employee.patronymic:
-                        user.last_name += " " + employee.patronymic
-                    user.save()
-                    group.user_set.add(user)
+                    username = employee.email
+                    try:
+                        user = User.objects.get(username=username)
+                        if not user:
+                            user = User.objects.create_user(username, employee.email, '0000')
+                            user.first_name = employee.surname
+                            user.last_name = employee.name
+                            if employee.patronymic:
+                                user.last_name += " " + employee.patronymic
+                            user.save()
+                            group.user_set.add(user)
+                            print("created ", employee)
+                    except:
+                        pass
             return redirect(reverse('home'))
+
+
+class UsersDeleteView(View):
+    """
+    Удаление всех аккаунтов сотрудников кроме аккаунта суперпользователя
+    """
+    def get(self, request):
+        if request.user.is_superuser:
+            User.objects.filter(is_superuser=False).delete()
+        return redirect(reverse('home'))

@@ -50,9 +50,9 @@
                                         <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>
                                         <li><a href="{% url 'upload_db' %}">Обновить БД</a></li>
                                         <li><a href="{% url 'delete_db' %}">Удалить БД</a></li>
-                                        <li><a href="{% url 'crt_emp_users' %}">Создать группу пользователей</a></li>
-                                        <li><a href="#">Удалить все группы пользователей</a></li>
-                                        <li><a href="#">Запись в БД сотрудников</a></li>
+                                        <li><a href="#">Создать группу пользователей</a></li>
+                                        <li><a href="{% url 'del_emp_users' %}">Удалить все группы пользователей</a></li>
+                                        <li><a href="{% url 'crt_emp_users' %}">Запись в БД сотрудников</a></li>
                                     {% endif %}
                                 </ul>
         				    </div>

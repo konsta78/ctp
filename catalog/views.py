@@ -21,9 +21,7 @@ class IndexView(View):
     """
 
     def get(self, request):
-        # добавление пользователя с именем 'test' в группу "testgroup"
-        # group = Group.objects.get(name="testgroup")
-        # group.user_set.add(User.objects.get(username="test"))
+
 
         # num_visits = request.session.get('num_visits', 0)
         # request.session['num_visits'] = num_visits + 1
@@ -216,17 +214,17 @@ class LoadDataBaseView(View):
                 room=room_lst[i]
             )
 
-    def create_subdivision_departament(self, horisontal_merged):
+    def create_subdivision_departament(self, horizontal_merged):
         """
         Функция создание записей в БД с подотделами
-        :param horisontal_merged: список горизонтальных объединенных ячеек с наименованиями подотделов
+        :param horizontal_merged: список горизонтальных объединенных ячеек с наименованиями подотделов
         :return: запись данных в БД
         """
-        for k in range(len(horisontal_merged)):
+        for k in range(len(horizontal_merged)):
             SubdivisionDepartament.objects.update_or_create(
                 id=k + 1,
-                sub_name=horisontal_merged[k][1],
-                id_employee=horisontal_merged[k][0] + 1
+                sub_name=horizontal_merged[k][1],
+                id_employee=horizontal_merged[k][0] + 1
             )
 
     def create_departments_and_employees(self, sheet, departments_cells):
@@ -335,3 +333,21 @@ class DeleteDataBaseView(View):
         else:
             return redirect(reverse('home'))
 
+
+class EmployeeListView(View):
+    def get(self, request):
+        if request.user.is_superuser:
+            employees = Employee.objects.all()
+            group = Group.objects.get(name="Employees")
+            max_count = Employee.objects.all().count()
+            for employee in employees:
+                if employee.email:
+                    name = str(employee) # login == email unique = true
+                    user = User.objects.create_user(name, employee.email, '0000')
+                    user.first_name = employee.surname
+                    user.last_name = employee.name
+                    if employee.patronymic:
+                        user.last_name += " " + employee.patronymic
+                    user.save()
+                    group.user_set.add(user)
+            return redirect(reverse('home'))

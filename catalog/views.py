@@ -9,7 +9,8 @@ from . import addresses
 import re
 
 
-# декоратор для передачи в шаблон значения из словаря по ключу
+# регистрация нового фильтра для шаблона.
+# передача в шаблон значения из словаря по ключу
 @register.filter(name="get_item")
 def get_item(dictionary, key):
     return dictionary.get(key)

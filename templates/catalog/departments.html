@@ -6,6 +6,7 @@
         <table class="bordered">
             <thead>
             <tr>
+                <th>№ п/п</th>
                 <th>Наименование:</th>
                 <th>Адрес:</th>
             </tr>
@@ -14,6 +15,7 @@
             {% for department in departments %}
 
                 <tr>
+                    <td align="center" width="5%">{{ forloop.counter }}</td>
                     <td style="text-align: left">
                         <b><a href="{{ department.get_absolute_url }}">{{ department.name }}</a></b>
                     </td>

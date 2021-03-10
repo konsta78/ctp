@@ -6,7 +6,7 @@
         <table class="bordered">
             <thead>
             <tr>
-                <th>id</th>
+                <th>№ п/п</th>
                 <th>Сотрудник</th>
                 <th>Должность</th>
                 <th>Раб. телефон</th>
@@ -32,7 +32,7 @@
                             {% endif %}
                         {% endfor %}
                         <tr>
-                            <td align="center" width="5%">{{ employee.id }}</td>
+                            <td align="center" width="5%">{{ forloop.counter }}</td>
                             <td width="30%">
                                 <b><a href="{{ employee.get_absolute_url }}">
                                     {{ employee }}

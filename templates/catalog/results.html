@@ -41,7 +41,21 @@
                 {% endfor %}
         {% endif %}
 
-        {% if not employees and not departments %}
+        {% if pos_changes_name %}
+            <tr>
+                <th width="30%" style="vertical-align: top" rowspan={{ count_pos }}>
+                    Должность
+                </th>
+                {% for pos in pos_changes_name %}
+                    <td colspan="2">
+                        <b><a href="{{ pos.get_absolute_url }}">{{ pos }}</a></b> -
+                        {{ pos_changes_name|get_item:pos|safe }}
+                    </td>
+            </tr>
+                {% endfor %}
+        {% endif %}
+
+        {% if not employees and not departments and not pos_changes_name %}
             <tr>
                 <td colspan="2">
                     По вашему запросу ничего не найдено. Попробуйте уточнить параметры поиска.

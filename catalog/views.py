@@ -88,45 +88,59 @@ class ResultsView(View):
 
         emp_changes_name = {}  # словарь с измененными ФИО сотрудников (подстветка строки поиска)
         dep_changes_name = {}  # словарь с измененными наименованиями отделов (подстветка строки поиска)
+        pos_changes_name = {}  # словарь с измененными названиями должностей сотрудников (подсветка строки поиска))
 
         search = request.GET.get('search')
 
-        if search == "":  # при пустом поле поиска возращаемся на главную страницу
+        replace_string = [
+            "<span style='background-color: yellow'>" + search.capitalize() + "</span>",
+            "<span style='background-color: yellow'>" + search.lower() + "</span>"
+        ]
+
+        if search == "" or len(search) < 3:  # при пустом или слишком коротком запросе возращаемся на главную страницу
             context = {"employees": employees, "departments": departments}
             template = 'catalog/index.html'
         else:
-            objects_employess = []  # список сотрудников по результатам поиска
+            objects_employees = []  # список сотрудников по результатам поиска
             objects_departments = []  # список отделов по результатам поиска
 
-            for employee in employees:  # поиск среди сотрудников по ФИО
+            for employee in employees:  # поиск среди сотрудников по ФИО и по должности
+
+                #  поиск по должности
+                if search.lower() in employee.position.lower():
+                    if employee.position.lower().startswith(search.lower()):
+                        tmp = employee.position.lower().replace(search.lower(), replace_string[0])
+                    else:
+                        tmp = employee.position.lower().replace(search.lower(), replace_string[1]).capitalize()
+                    pos_changes_name[employee] = tmp
+
+                #  поиск по ФИО
                 if search.lower() in str(employee).lower():
                     tmp = str(employee).split()
                     for i in range(len(tmp)):
                         if tmp[i].lower().startswith(search.lower()):
-                            tmp[i] = tmp[i].lower().replace(search.lower(),
-                            "<span style='background-color: yellow'>" + search.capitalize() + "</span>")
+                            tmp[i] = tmp[i].lower().replace(search.lower(), replace_string[0])
                         else:
-                            tmp[i] = tmp[i].replace(search.lower(),
-                            "<span style='background-color: yellow'>" + search.lower() + "</span>").capitalize()
+                            tmp[i] = tmp[i].replace(search.lower(), replace_string[1]).capitalize()
                     tmp_str = " ".join(tmp)
                     emp_changes_name[employee.id] = tmp_str
-                    objects_employess.append(employee)
+                    objects_employees.append(employee)
 
-            for department in departments:  # поиск отделов по их наименованию
+            #  поиск по наименованию отдела
+            for department in departments:
                 if search.lower() in department.name.lower():
                     if department.name.lower().startswith(search.lower()):
-                        tmp_str = department.name.lower().replace(search.lower(),
-                            "<span style='background-color: yellow'>" + search.capitalize() + "</span>")
+                        tmp_str = department.name.lower().replace(search.lower(), replace_string[0])
                     else:
-                        tmp_str = department.name.lower().replace(search.lower(),
-                            "<span style='background-color: yellow'>" + search.lower() + "</span>").capitalize()
+                        tmp_str = department.name.lower().replace(search.lower(), replace_string[1]).capitalize()
 
                     dep_changes_name[department.id] = tmp_str  # наименование отдела с подстветкой строки поиска
                     objects_departments.append(department)
 
-            context = {"employees": objects_employess, "departments": objects_departments,
-                       "count_emp": len(objects_employess), "count_dep": len(objects_departments),
-                       "dep_changes_name": dep_changes_name, "emp_changes_name": emp_changes_name}
+            context = {"employees": objects_employees, "departments": objects_departments,
+                       "count_emp": len(objects_employees), "count_dep": len(objects_departments),
+                       "dep_changes_name": dep_changes_name, "emp_changes_name": emp_changes_name,
+                       "pos_changes_name": pos_changes_name, "count_pos": len(pos_changes_name)}
             template = 'catalog/results.html'
 
         return context, template
@@ -348,16 +362,14 @@ class UsersListView(View):
                 if employee.email:
                     username = employee.email
                     try:
-                        user = User.objects.get(username=username)
-                        if not user:
-                            user = User.objects.create_user(username, employee.email, '0000')
-                            user.first_name = employee.surname
-                            user.last_name = employee.name
-                            if employee.patronymic:
-                                user.last_name += " " + employee.patronymic
-                            user.save()
-                            group.user_set.add(user)
-                            print("created ", employee)
+                        user = User.objects.create_user(username, employee.email, '0000')
+                        user.first_name = employee.surname
+                        user.last_name = employee.name
+                        if employee.patronymic:
+                            user.last_name += " " + employee.patronymic
+                        user.save()
+                        group.user_set.add(user)
+                        print("created ", employee)
                     except:
                         pass
         return redirect(reverse('home'))

@@ -196,6 +196,18 @@ input[type=submit] {
 	/*width: 250px;*/
 }
 
+.scrollup{
+    width:40px;
+    height:40px;
+    opacity:0.3;
+    position:fixed;
+    bottom:50px;
+    right:100px;
+    display:none;
+    text-indent:-9999px;
+    background: url('icon_top.png') no-repeat;
+}
+
 /*.headerContent {*/
 /*	!*box-shadow: 0 3px 2px rgba(0,0,0,0.3);*!*/
 /*	!*-webkit-box-shadow: 0 3px 2px rgba(0,0,0,0.3);*!*/

@@ -7,6 +7,27 @@
 		<meta name="viewport" content="width=device-width; initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="{% static 'catalog/style.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'catalog/media-queries.css'  %}">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+
+            $(window).scroll(function(){
+            if ($(this).scrollTop() > 100) {
+            $('.scrollup').fadeIn();
+            } else {
+            $('.scrollup').fadeOut();
+            }
+            });
+
+            $('.scrollup').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 600);
+            return false;
+            });
+
+            });
+</script>
+
 		<title>Телефонный справочник</title>
 	</head>
 	<body>
@@ -64,6 +85,7 @@
                     </tr>
                 </table>
             </div>
+            <a href="#" class="scrollup">Наверх</a>
             <div class="header" style="padding-bottom: 20px">
                 <table class="menu">
                     <tr>

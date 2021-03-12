@@ -1,7 +1,8 @@
 from django.urls import path, include
 from catalog.views import IndexView, EmployeeDetail, GovernanceView, \
     ResultsView, DepartmentsView, DepartmentDetail, LoadDataBaseView, \
-    DeleteDataBaseView, AddressesView, UsersListView, UsersDeleteView
+    DeleteDataBaseView, AddressesView, UsersListView, UsersDeleteView, \
+    SaveDataBaseView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='home'),
@@ -13,6 +14,7 @@ urlpatterns = [
     path('addresses/',AddressesView.as_view(), name='addresses'),
     path('results/', ResultsView.as_view(), name='results'),
     path('upload/', LoadDataBaseView.as_view(), name='upload_db'),
+    path('save/', SaveDataBaseView.as_view(), name='save_db'),
     path('delete/', DeleteDataBaseView.as_view(), name='delete_db'),
     path('users/create', UsersListView.as_view(), name='crt_emp_users'),
     path('users/delete', UsersDeleteView.as_view(), name='del_emp_users'),

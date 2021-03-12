@@ -7,6 +7,7 @@ from openpyxl import load_workbook
 from django.template.defaulttags import register
 from . import addresses
 import re
+import openpyxl
 
 
 # регистрация нового фильтра для шаблона.
@@ -333,6 +334,28 @@ class LoadDataBaseView(View):
 
         else:
             return redirect(reverse('home'))
+
+
+class SaveDataBaseView(View):
+    def get(self, request):
+        if request.user.is_superuser:
+            filename = 'data.xlsx'
+            wb = openpyxl.Workbook()
+            ws_write = wb.create_sheet()
+            ws_write.append(["№ п/п", "ФИО", "Должность", "Раб. тел.", "Доб. номер", "№ каб."])
+            employees = Employee.objects.all()
+            departments = Department.objects.all()
+            for i in departments:
+                ws_write.append([i.name])
+                count = 0
+                for k in employees:
+                    if k.department == i:
+                        ws_write.append([count, str(k), k.position, k.phone_work, k.phone_work_additional, k.office])
+                    count += 1
+
+            wb.save(filename=filename)
+            return redirect(reverse('home'))
+
 
 
 class DeleteDataBaseView(View):

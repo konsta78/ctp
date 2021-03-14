@@ -6,7 +6,7 @@
         <table class="bordered">
             <thead>
             <tr>
-                <th>№ п/п</th>
+                <th style="border-left: 1px solid #4c545e">№ п/п</th>
                 <th>Сотрудник</th>
                 <th>Должность</th>
                 <th>Раб. телефон</th>
@@ -39,10 +39,10 @@
                                 </a></b>
                             </td>
                             <td>{{ employee.position|default_if_none:"-" }}</td>
-                            <td>{{ employee.phone_work|default_if_none:"-" }}</td>
+                            <td width="11%">{{ employee.phone_work|default_if_none:"-" }}</td>
                             <td>{{ employee.phone_work_additional|default_if_none:"-" }}</td>
-                            <td>{{ employee.office|default_if_none:"-" }}</td>
-                            <td>{{ department.adress|default_if_none:"-" }}</td>
+                            <td width="7%">{{ employee.office|default_if_none:"-" }}</td>
+                            <td width="20%">{{ department.adress|default_if_none:"-" }}</td>
                         </tr>
                     {% endif %}
 

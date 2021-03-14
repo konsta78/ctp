@@ -46,7 +46,7 @@
                         </td>
                         <td align="center">
                             {% if user.is_authenticated %}
-                                <a href="{% url 'logout' %}">{{ user.username }}</a>
+                                <a href="{% url 'logout' %}" title="Выход">{{ user.username }}</a>
                             {% else %}
                                 <a href="{% url 'login' %}">Вход</a>
                             {% endif %}
@@ -72,8 +72,8 @@
                                         <li><a href="{% url 'upload_db' %}">Обновить БД</a></li>
                                         <li><a href="{% url 'save_db' %}">Сохранить БД</a></li>
                                         <li><a href="{% url 'delete_db' %}">Удалить БД</a></li>
-                                        <li><a href="{% url 'del_emp_users' %}">Удалить все группы пользователей</a></li>
-                                        <li><a href="{% url 'crt_emp_users' %}">Запись в БД сотрудников</a></li>
+                                        <li><a href="{% url 'del_emp_users' %}">Удалить пользователей</a></li>
+                                        <li><a href="{% url 'crt_emp_users' %}">Добавить пользователей</a></li>
                                     {% endif %}
                                 </ul>
         				    </div>

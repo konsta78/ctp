@@ -11,7 +11,7 @@
         </tr>
         {% if employees %}
             <tr>
-                <th width="30%" style="vertical-align: top" rowspan={{ count_emp }}>
+                <th width="30%" style="vertical-align: top; border-left: 1px solid #4c545e" rowspan={{ count_emp }}>
                     Сотрудник
                 </th>
                 {% for employee in employees %}
@@ -30,7 +30,7 @@
 
         {% if departments %}
             <tr>
-                <th width="30%" style="vertical-align: top" rowspan={{ count_dep }}>
+                <th width="30%" style="vertical-align: top; border-left: 1px solid #4c545e" rowspan={{ count_dep }}>
                     Отдел / Подразделение
                 </th>
                 {% for department in departments %}
@@ -43,7 +43,7 @@
 
         {% if pos_changes_name %}
             <tr>
-                <th width="30%" style="vertical-align: top" rowspan={{ count_pos }}>
+                <th width="30%" style="vertical-align: top; border-left: 1px solid #4c545e" rowspan={{ count_pos }}>
                     Должность
                 </th>
                 {% for pos in pos_changes_name %}

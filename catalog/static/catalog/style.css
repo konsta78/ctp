@@ -105,7 +105,9 @@ table.bordered th {
 	padding: 10px;
 	vertical-align: center;
 	/*text-align: center;*/
-	border: 1px solid #4c545e;
+	border-bottom: 1px solid #4c545e;
+	border-top: 1px solid #4c545e;
+	border-left: 1px solid lightgrey;
 }
 
 table.bordered td {

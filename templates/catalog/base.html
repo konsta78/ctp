@@ -66,11 +66,16 @@
                                     <li><a href="{% url 'addresses' %}">Адреса</a></li>
                                 </ul>
                                 <br>
+                                {% if user.is_authenticated %}
+                                    <ul class="leftNav">
+                                            <li><a href="{% url 'save_db' %}">Сохранить БД</a></li>
+                                        {% endif %}
+                                    </ul>
+                                <br>
                                 {% if user.is_superuser %}
                                 <ul class="leftNav">
                                         <li><a href="{% url 'admin:index' %}">Админ-панель</a></li>
                                         <li><a href="{% url 'upload_db' %}">Обновить БД</a></li>
-                                        <li><a href="{% url 'save_db' %}">Сохранить БД</a></li>
                                         <li><a href="{% url 'delete_db' %}">Удалить БД</a></li>
                                         <li><a href="{% url 'del_emp_users' %}">Удалить пользователей</a></li>
                                         <li><a href="{% url 'crt_emp_users' %}">Добавить пользователей</a></li>

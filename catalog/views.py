@@ -337,8 +337,11 @@ class LoadDataBaseView(View):
 
 
 class SaveDataBaseView(View):
+    """
+    Сохранение информации из базы данных в Excel-файл
+    """
     def get(self, request):
-        if request.user.is_superuser:
+        if request.user.is_authenticated:
             filename = 'data.xlsx'
             wb = openpyxl.Workbook()
             ws_write = wb.create_sheet()
@@ -360,7 +363,7 @@ class SaveDataBaseView(View):
 
 class DeleteDataBaseView(View):
     """
-    Отображение страницы при удалении БД
+    Удаление базы данных пользователей и сотрудников
     """
     def get(self, request):
         if request.user.is_superuser:

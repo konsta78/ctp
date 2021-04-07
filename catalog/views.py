@@ -318,9 +318,14 @@ class LoadDataBaseView(View):
         :param request: запрос пользователя
         :return: render / redirect
         """
+        return render(request, 'catalog/upload.html')
+
+    def post(self, request):
         if request.user.is_superuser:
             self.create_addresses()
-            sheet, horizontal_merged, departments_cells = self.read_excel_file('test.xlsx')
+            filename = request.FILES['file_db']
+
+            sheet, horizontal_merged, departments_cells = self.read_excel_file(filename)
             self.create_subdivision_departament(horizontal_merged)
             self.create_departments_and_employees(sheet, departments_cells)
 

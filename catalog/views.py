@@ -393,15 +393,16 @@ class UsersListView(View):
             for employee in employees:
                 if employee.email:
                     username = employee.email
+                    password = User.objects.make_random_password()
                     try:
-                        user = User.objects.create_user(username, employee.email, '0000')
+                        user = User.objects.create_user(username, employee.email, password)
                         user.first_name = employee.surname
                         user.last_name = employee.name
                         if employee.patronymic:
                             user.last_name += " " + employee.patronymic
                         user.save()
                         group.user_set.add(user)
-                        print("created ", employee)
+                        print("created ", employee, "password: ", password)
                     except:
                         pass
         return redirect(reverse('home'))

@@ -323,20 +323,21 @@ class LoadDataBaseView(View):
     def post(self, request):
         if request.user.is_superuser:
             self.create_addresses()
-            filename = request.FILES['file_db']
+            if request.FILES.get('file_db'):
+                filename = request.FILES['file_db']
+                sheet, horizontal_merged, departments_cells = self.read_excel_file(filename)
+                self.create_subdivision_departament(horizontal_merged)
+                self.create_departments_and_employees(sheet, departments_cells)
 
-            sheet, horizontal_merged, departments_cells = self.read_excel_file(filename)
-            self.create_subdivision_departament(horizontal_merged)
-            self.create_departments_and_employees(sheet, departments_cells)
-
-            employees = Employee.objects.all()
-            departments = Department.objects.all()
-            sub_departments = SubdivisionDepartament.objects.all()
-            context = {"employees": employees,
-                       "departments": departments,
-                       "sub_departments": sub_departments}
-            return render(request, 'catalog/index.html', context)
-
+                employees = Employee.objects.all()
+                departments = Department.objects.all()
+                sub_departments = SubdivisionDepartament.objects.all()
+                context = {"employees": employees,
+                           "departments": departments,
+                           "sub_departments": sub_departments}
+                return render(request, 'catalog/index.html', context)
+            else:
+                return render(request, 'catalog/upload.html')
         else:
             return redirect(reverse('home'))
 

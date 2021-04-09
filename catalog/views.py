@@ -203,7 +203,7 @@ class LoadDataBaseView(View):
                 horizontal_merged.append([cell - start_cell + 1, sheet[f'B{cell}'].value])
 
         # добавляем в список номер последней строки для корректного подсчета диапазона
-        vertical_merged.append(sheet.max_row)
+        vertical_merged.append(sheet.max_row + 1)
 
         # добавляем размер объединенной группы
         for i in range(1, len(vertical_merged)):
@@ -271,33 +271,31 @@ class LoadDataBaseView(View):
             for i in range(departments_cells[index][1]):
                 current_cell = departments_cells[index][0] + i
 
-                # обработка пустых ячеек столбца 'С'
-                if sheet[f'C{current_cell}'].value is None:
-                    pass
-                    # print('Поле "С" пустое!')
-
                 # обработка пустых ячеек столбца 'D'
-                elif sheet[f'D{current_cell}'].value is None:
-                    pass
-                    # fio = [" ", " ", " "]
-                else:
+                if sheet[f'D{current_cell}'].value is not None:
                     fio = str(sheet[f'D{current_cell}'].value).split()  # список с ФИО
-                    if len(fio) < 3:
-                        fio.append(' ')
-                    Employee.objects.update_or_create(
-                        id=current_cell - 3,
-                        surname=fio[0],
-                        name=fio[1],
-                        patronymic=fio[2],
-                        position=sheet[f'C{current_cell}'].value,
-                        department=Department.objects.get(id=index + 1),
-                        phone_work=sheet[f'E{current_cell}'].value,
-                        phone_work_additional=sheet[f'F{current_cell}'].value,
-                        phone_mob=sheet[f'G{current_cell}'].value,
-                        email=sheet[f'H{current_cell}'].value,
-                        office=sheet[f'I{current_cell}'].value,
-                        dob=None
-                    )
+                elif sheet[f'C{current_cell}'].value is not None:
+                    fio = [' ', ' ', ' ']
+                else:
+                    continue
+
+                if len(fio) < 3:
+                    fio.append(' ')
+
+                Employee.objects.update_or_create(
+                    id=current_cell - 3,
+                    surname=fio[0],
+                    name=fio[1],
+                    patronymic=fio[2],
+                    position=sheet[f'C{current_cell}'].value,
+                    department=Department.objects.get(id=index + 1),
+                    phone_work=sheet[f'E{current_cell}'].value,
+                    phone_work_additional=sheet[f'F{current_cell}'].value,
+                    phone_mob=sheet[f'G{current_cell}'].value,
+                    email=sheet[f'H{current_cell}'].value,
+                    office=sheet[f'I{current_cell}'].value,
+                    dob=None
+                )
 
         # поиск адресов в ячейках excel-файла и назначение их соответствующим отделам
         for index in range(len(departments_cells)):
@@ -328,7 +326,6 @@ class LoadDataBaseView(View):
                 sheet, horizontal_merged, departments_cells = self.read_excel_file(filename)
                 self.create_subdivision_departament(horizontal_merged)
                 self.create_departments_and_employees(sheet, departments_cells)
-
                 employees = Employee.objects.all()
                 departments = Department.objects.all()
                 sub_departments = SubdivisionDepartament.objects.all()
@@ -389,7 +386,7 @@ class UsersListView(View):
         if request.user.is_superuser:
             employees = Employee.objects.all()
             group = Group.objects.get(name="Employees")
-
+            f = open('users.txt', 'w')
             for employee in employees:
                 if employee.email:
                     username = employee.email
@@ -403,8 +400,10 @@ class UsersListView(View):
                         user.save()
                         group.user_set.add(user)
                         print("created ", employee, "password: ", password)
+                        f.write(employee + ', ' + password + '\n')
                     except:
                         pass
+            f.close()
         return redirect(reverse('home'))
 
 

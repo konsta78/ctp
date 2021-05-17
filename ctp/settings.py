@@ -122,5 +122,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/'  # переход на главную страницу при авторизации
+LOGIN_REDIRECT_URL = '/home'  # переход на главную страницу при авторизации
 LOGOUT_REDIRECT_URL = '/'  # переход на главную страницу при выходе из системы

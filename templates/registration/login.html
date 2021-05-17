@@ -1,31 +1,52 @@
-{% extends "catalog/base.html" %}
 {% load static %}
 
-{% block content %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="{% static 'catalog/auth.css' %}">
 
-    {% if form.errors %}
-      <p>Проверьте правильность ввода имени пользователя и пароля!</p>
-    {% endif %}
+		<title>Телефонный справочник ОАО "Метрострой"</title>
+	</head>
+	<body>
 
-    <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <table>
-        <tr>
-          <td>Zimbra e-mail: </td>
-          <td>{{ form.username }}</td>
-        </tr>
 
-        <tr>
-          <td>Пароль: </td>
-          <td>{{ form.password }}</td>
-        </tr>
-    </table>
+        <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+            <div class="parent">
+                <table width="300px">
 
-    <input type="submit" value="Вход">
+                    <tr>
+                      <td>Zimbra e-mail: </td>
+                      <td>{{ form.username }}</td>
+                    </tr>
 
-    </form>
-    <!--
-    {# Assumes you setup the password_reset view in your URLconf #}
-    <p style="margin-top: 10px"><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
-    -->
-{% endblock %}
+                    <tr>
+                      <td>Пароль: </td>
+                      <td>{{ form.password }}</td>
+                    </tr>
+
+                    <tr>
+                      <td></td>
+                      <td>
+                          <input type="submit" value="Вход">
+                      </td>
+                    </tr>
+
+                    {% if form.errors %}
+                    <tr>
+                        <td colspan="2" >
+                            <b>Проверьте правильность ввода имени пользователя и пароля!</b>
+                        </td>
+                    </tr>
+
+                    {% endif %}
+                </table>
+            </div>
+        </form>
+	</body>
+</html>
+
+
+

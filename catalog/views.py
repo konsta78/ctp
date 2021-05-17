@@ -400,7 +400,9 @@ class UsersListView(View):
                         user.save()
                         group.user_set.add(user)
                         print("created ", employee, "password: ", password)
-                        f.write(employee + ', ' + password + '\n')
+                        f.write(user.first_name + ' ' +
+                                user.last_name + ' ' +
+                                ', password: ' + password + '\n')
                     except:
                         pass
             f.close()

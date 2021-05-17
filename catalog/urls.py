@@ -3,10 +3,13 @@ from catalog.views import IndexView, EmployeeDetail, GovernanceView, \
     ResultsView, DepartmentsView, DepartmentDetail, LoadDataBaseView, \
     DeleteDataBaseView, AddressesView, UsersListView, UsersDeleteView, \
     SaveDataBaseView
+from django.contrib.auth import views
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='home'),
-    path('', include('django.contrib.auth.urls')),
+    path('', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('home/', IndexView.as_view(), name='home'),
+    # path('', include('django.contrib.auth.urls')),
     path('employee/<int:pk>', EmployeeDetail.as_view(), name='employee'),
     path('governance/', GovernanceView.as_view(), name='governance'),
     path('departments/', DepartmentsView.as_view(), name='department'),

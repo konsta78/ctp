@@ -45,11 +45,7 @@
                             </form>
                         </td>
                         <td align="center">
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'logout' %}" title="Выход">{{ user.username }}</a>
-                            {% else %}
-                                <a href="{% url 'login' %}">Вход</a>
-                            {% endif %}
+                            <a href="{% url 'logout' %}" title="Выход">{{ user.username }}</a>
                         </td>
                     </tr>
                 </table>

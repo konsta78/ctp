@@ -5,6 +5,7 @@ from .models import Employee, AdressDepartment, Department, SubdivisionDepartame
 from django.contrib.auth.models import User, Group
 from openpyxl import load_workbook
 from django.template.defaulttags import register
+from django.contrib.auth.decorators import login_required
 from . import addresses
 import re
 import openpyxl
@@ -19,43 +20,52 @@ def get_item(dictionary, key):
 
 class IndexView(View):
     """
-    Отображение стартовой страницы
+    Отображение стартовой страницы, если юзер авторизован.
+    Иначе возврат на страницу ввода логина и пароля
     """
 
     def get(self, request):
 
+        if request.user.is_authenticated:
+            employees = Employee.objects.all()
+            departments = Department.objects.all()
+            sub_departments = SubdivisionDepartament.objects.all()
+            context = {"employees": employees,
+                       "departments": departments,
+                       "sub_departments": sub_departments}
+            return render(request, 'catalog/index.html', context)
 
-        # num_visits = request.session.get('num_visits', 0)
-        # request.session['num_visits'] = num_visits + 1
-
-        employees = Employee.objects.all()
-        departments = Department.objects.all()
-        sub_departments = SubdivisionDepartament.objects.all()
-        context = {"employees": employees,
-                   "departments": departments,
-                   "sub_departments": sub_departments}
-        return render(request, 'catalog/index.html', context)
+        return redirect(reverse('login'))
 
 
 class GovernanceView(View):
     """
-    Отображение страницы с информацией о руководстве
+    Отображение страницы с информацией о руководстве, если юзер авторизован.
+    Иначе возврат на страницу ввода логина и пароля
     """
     def get(self, request):
-        employees = Employee.objects.all()
-        departments = Department.objects.filter(name='Руководство')
-        context = {"employees": employees, "departments": departments}
-        return render(request, 'catalog/index.html', context)
+        if request.user.is_authenticated:
+            employees = Employee.objects.all()
+            departments = Department.objects.filter(name='Руководство')
+            context = {"employees": employees, "departments": departments}
+            return render(request, 'catalog/index.html', context)
+
+        return redirect(reverse('login'))
 
 
 class DepartmentsView(View):
     """
-    Отображение страницы с информацией об отделах
+    Отображение страницы с информацией об отделах, если юзер авторизован.
+    Иначе возврат на страницу ввода логина и пароля
     """
+
     def get(self, request):
-        departments = Department.objects.all().order_by('name')
-        context = {"departments": departments}
-        return render(request, 'catalog/departments.html', context)
+        if request.user.is_authenticated:
+            departments = Department.objects.all().order_by('name')
+            context = {"departments": departments}
+            return render(request, 'catalog/departments.html', context)
+
+        return redirect(reverse('login'))
 
 
 class AddressesView(View):
@@ -147,8 +157,11 @@ class ResultsView(View):
         return context, template
 
     def get(self, request):
-        context, template = self.check_find(request)
-        return render(request, template, context)
+        if request.user.is_authenticated:
+            context, template = self.check_find(request)
+            return render(request, template, context)
+
+        return redirect(reverse('login'))
 
 
 class EmployeeDetail(generic.DetailView):
@@ -168,13 +181,14 @@ class DepartmentDetail(generic.DetailView):
         """
         Функция для добавления в контекст об отделе также и данных о сотрудниках
         (обеспечивает работоспособность ссылок на странице 'departments-detail.html')
-        :param kwargs:
-        :return: context
+        Если авторизован, до контекст добавляется. Иначе контекст пуст.
+
         """
-        context = super().get_context_data(**kwargs)
-        context['employees'] = Employee.objects.all()
-        context['sub_departments'] = SubdivisionDepartament.objects.all()
-        return context
+        if self.request.user.is_authenticated:
+            context = super().get_context_data(**kwargs)
+            context['employees'] = Employee.objects.all()
+            context['sub_departments'] = SubdivisionDepartament.objects.all()
+            return context
 
 
 class LoadDataBaseView(View):
@@ -404,7 +418,7 @@ class UsersListView(View):
                                 user.last_name + ' ' +
                                 ', password: ' + password + '\n')
                     except:
-                        pass
+                        print(employee, " created earlier")
             f.close()
         return redirect(reverse('home'))
 

@@ -22,3 +22,4 @@ urlpatterns = [
     path('users/create', UsersListView.as_view(), name='crt_emp_users'),
     path('users/delete', UsersDeleteView.as_view(), name='del_emp_users'),
 ]
+
